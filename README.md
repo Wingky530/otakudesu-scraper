@@ -173,7 +173,7 @@ To prevent getting your proxy IPs banned and to maintain a healthy scraping envi
 
 ## Sample Output
 
-Below is a realistic but fictional example of the final resolved video object returned after completing the entire scraping flow:
+Below is a realistic example of the final resolved video object returned after completing the entire scraping flow:
 
 ```json
 {
