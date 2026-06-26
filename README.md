@@ -1,43 +1,42 @@
-# Dokumentasi Scraper Otakudesu
+# Otakudesu Scraper Documentation
 
-Repositori ini berisi sekumpulan purwarupa (prototype) dan skrip pengujian untuk melakukan scraping pada situs Otakudesu. Skrip-skrip ini sebelumnya dikembangkan sebagai bagian dari riset untuk proyek Cerydra.
+This repository contains a collection of prototypes and testing scripts for scraping the Otakudesu website. These scripts were originally developed as part of research for the Cerydra project.
 
-## Struktur Berkas
+## File Structure
 
-Kumpulan berkas di dalam direktori `src` merupakan skrip Node.js (TypeScript) yang digunakan untuk menguji berbagai tahap scraping:
+The files inside the `src` directory are Node.js (TypeScript) scripts used to test various stages of scraping:
 
-*   **`test-scrape-otakudesu.ts`**: Skrip utama yang merangkum seluruh alur pencarian, pencocokan judul, hingga ekstraksi tautan video (iframe dan cermin/mirror).
-*   **`test-otakudesu-ajax.ts`** & **`test-otakudesu-ajax-resolve.ts`**: Skrip khusus untuk meneliti dan memecahkan cara kerja pemanggilan AJAX tersembunyi (nonce dan resolusi tautan cermin) pada situs target.
-*   **`test-otakudesu-search.ts`**: Modul yang berfokus pada fitur pencarian dan algoritma pencocokan judul (string similarity).
-*   **`test-otakudesu-episode-inspect.ts`**: Skrip untuk membedah struktur HTML halaman episode dan mengekstrak daftar cermin yang tersedia.
+*   **`test-scrape-otakudesu.ts`**: The main script that encapsulates the entire flow of searching, title matching, and video link extraction (iframe and mirror links).
+*   **`test-otakudesu-ajax.ts`** & **`test-otakudesu-ajax-resolve.ts`**: Dedicated scripts to research and decipher how hidden AJAX calls (nonce and mirror link resolution) work on the target site.
+*   **`test-otakudesu-search.ts`**: A module focused on the search feature and title matching algorithm (string similarity).
+*   **`test-otakudesu-episode-inspect.ts`**: A script to inspect the HTML structure of the episode page and extract the available mirror lists.
 
-## Alur Scraping Otakudesu
+## Otakudesu Scraping Flow
 
-Scraping Otakudesu memiliki alur yang cukup kompleks karena adanya perlindungan anti-bot, pengalihan halaman, dan penggunaan AJAX untuk menyembunyikan tautan video asli. Berikut adalah alur lengkapnya:
+Scraping Otakudesu involves a fairly complex flow due to anti-bot protections, page redirections, and the use of AJAX to hide actual video links. Here is the complete flow:
 
-### 1. Pencarian Anime (Search & Match)
-*   **Request**: Mengirimkan kueri pencarian melalui URL `/?s=[judul_anime]`.
-*   **Parsing**: Mengambil daftar hasil pencarian.
-*   **Pencocokan Tingkat Lanjut**: Karena hasil pencarian bisa beragam (terutama untuk anime dengan banyak musim), sistem menggunakan algoritma *string similarity* (Levenshtein distance yang dimodifikasi). Algoritma ini memberi penalti jika pencocokan salah pada nomor musim (Season) atau bagian (Part).
+### 1. Anime Search and Match
+*   **Request**: Sends a search query via the `/?s=[anime_title]` URL.
+*   **Parsing**: Retrieves the list of search results.
+*   **Advanced Matching**: Because search results can vary (especially for anime with multiple seasons), the system uses a string similarity algorithm (a modified Levenshtein distance). This algorithm applies a penalty if there is a mismatch on the season or part numbers.
 
-### 2. Resolusi Halaman Anime
-*   Terkadang hasil pencarian tidak langsung mengarah ke halaman utama anime (URL dengan `/anime/`), melainkan ke halaman kategori atau pengalihan lainnya.
-*   Sistem akan melacak tautan tersebut untuk memastikan URL akhir benar-benar merupakan halaman informasi anime yang berisi daftar episode.
+### 2. Anime Page Resolution
+*   Sometimes the search results do not point directly to the main anime page (URLs containing `/anime/`), but rather to a category page or another redirection.
+*   The system traces these links to ensure the final URL is the actual anime information page containing the episode list.
 
-### 3. Ekstraksi Episode
-*   Setelah berada di halaman `/anime/`, sistem mencari elemen `.episodelist`.
-*   Melakukan iterasi untuk mencocokkan nomor episode yang diminta dengan teks episode yang tersedia (misalnya mencari angka spesifik pada label "Episode 11").
+### 3. Episode Extraction
+*   Once on the `/anime/` page, the system looks for the `.episodelist` element.
+*   It iterates to match the requested episode number with the available episode text (for example, looking for a specific number in the "Episode 11" label).
 
-### 4. Ekstraksi dan Resolusi Tautan Video
-Ini adalah bagian yang paling dilindungi oleh Otakudesu.
+### 4. Video Link Extraction and Resolution
+This is the most heavily protected part of Otakudesu.
 
-*   **Tautan Utama (Iframe)**: Situs sering kali langsung menyematkan iframe bawaan (seperti Ok.ru atau Mp4upload). Tautan ini dapat diambil langsung dari elemen `.player-embed iframe`.
-*   **Tautan Cermin (Mirror Links)**: Terdapat daftar server cermin dengan kualitas berbeda (360p, 480p, 720p). Tautan ini tidak tertulis secara gamblang pada HTML.
-    *   Setiap tombol cermin memiliki atribut `data-content` yang berisi string *base64* berformat JSON.
-    *   Untuk membuka string ini, klien web mengirim request GET ke `wp-admin/admin-ajax.php` dengan parameter *action* tertentu (contoh: `aa1208d27f29ca340c92c66d1926f13f`) guna mendapatkan *nonce* (token keamanan satu kali pakai).
-    *   Setelah *nonce* didapatkan, request AJAX kedua (`action=2a3505c93b0035d3f455df82bf976b84`) dikirim dengan membawa *nonce* dan muatan *base64* tadi.
-    *   Server Otakudesu kemudian mengembalikan string HTML yang dikodekan *base64*, yang apabila diurai akan berisi elemen iframe dengan tautan video asli (resolusi final).
+*   **Main Link (Iframe)**: The site often embeds a default iframe directly (such as Ok.ru or Mp4upload). This link can be extracted directly from the `.player-embed iframe` element.
+*   **Mirror Links**: There is a list of mirror servers with different qualities (360p, 480p, 720p). These links are not written plainly in the HTML.
+    *   Each mirror button has a `data-content` attribute containing a base64 string formatted as JSON.
+    *   To decode this string, the web client sends a GET request to `wp-admin/admin-ajax.php` with a specific action parameter (example: `aa1208d27f29ca340c92c66d1926f13f`) to get a nonce (a one-time security token).
+    *   After obtaining the nonce, a second AJAX request (`action=2a3505c93b0035d3f455df82bf976b84`) is sent carrying the nonce and the base64 payload.
+    *   The Otakudesu server then returns a base64 encoded HTML string, which when decoded contains an iframe element with the actual video link (final resolution).
 
-## Catatan Teknis
-*   **Proxy Pekerja (Worker Proxy)**: Skrip ini menggunakan Cloudflare Worker Proxy (`cerydra-video-proxy`) pada setiap request untuk menyembunyikan IP asal dan menambahkan header `User-Agent` yang valid.
-*   **Cheerio**: Semua proses pembedahan struktur HTML dilakukan menggunakan library `cheerio`.
+## Technical Notes
+*   **Cheerio**: All HTML structure parsing processes are performed using the `cheerio` library.
