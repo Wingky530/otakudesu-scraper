@@ -39,4 +39,5 @@ This is the most heavily protected part of Otakudesu.
     *   The Otakudesu server then returns a base64 encoded HTML string, which when decoded contains an iframe element with the actual video link (final resolution).
 
 ## Technical Notes
+*   **Cloudflare Worker Proxy**: The source code contains placeholders marked as `[YOUR_PROXY_URL_HERE]`. These must be replaced with your own Cloudflare Worker Proxy URL. The proxy is strictly required for every request to bypass anti-bot blocks, hide the origin IP address, and attach valid `User-Agent` headers without being rejected by the target server.
 *   **Cheerio**: All HTML structure parsing processes are performed using the `cheerio` library.
