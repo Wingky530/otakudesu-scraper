@@ -1,10 +1,11 @@
+import 'dotenv/config';
 import * as cheerio from 'cheerio';
 
 const AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
 async function test() {
   const baseUrl = 'https://otakudesu.blog';
-  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
+  const proxyUrl = process.env.PROXY_URL + '';
 
   const proxyFetch = async (url: string) => {
     const proxyTarget = `${proxyUrl}${encodeURIComponent(url)}`;

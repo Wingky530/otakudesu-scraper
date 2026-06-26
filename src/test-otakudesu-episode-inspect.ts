@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import * as cheerio from 'cheerio';
 
 async function test() {
-  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
+  const proxyUrl = process.env.PROXY_URL + '';
   const target = `https://otakudesu.blog/episode/bnha-s7-episode-21-sub-indo/`;
   const res = await fetch(`${proxyUrl}${encodeURIComponent(target)}`);
   const html = await res.text();

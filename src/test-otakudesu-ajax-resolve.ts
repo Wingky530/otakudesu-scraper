@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import * as cheerio from 'cheerio';
 import { AGENT } from '../src/lib/allanime.ts';
 
@@ -35,7 +36,7 @@ async function run() {
     }
     
     const targetUrl = `${baseUrl}/wp-admin/admin-ajax.php?${params.toString()}`;
-    const proxyUrl = `https://[YOUR_PROXY_URL_HERE]/?url=${encodeURIComponent(targetUrl)}`;
+    const proxyUrl = `${process.env.PROXY_URL}${encodeURIComponent(targetUrl)}`;
     
     console.log(`Calling AJAX via Worker proxy for action: ${action}...`);
     const response = await fetch(proxyUrl, {

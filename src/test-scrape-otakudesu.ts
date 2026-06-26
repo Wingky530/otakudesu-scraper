@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import * as cheerio from 'cheerio';
 
 const AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
@@ -48,7 +49,7 @@ async function scrapeOtakudesu(title: string, episode: string) {
   const baseUrl = 'https://otakudesu.blog';
   const cleanTitle = title.replace(/^#\d+\s+/, '').trim();
 
-  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
+  const proxyUrl = process.env.PROXY_URL + '';
   const targetSearch = `${baseUrl}/?s=${encodeURIComponent(cleanTitle)}`;
   console.log("Searching:", targetSearch);
   const searchRes = await fetch(`${proxyUrl}${encodeURIComponent(targetSearch)}`, {

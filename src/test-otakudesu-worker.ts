@@ -1,10 +1,11 @@
+import 'dotenv/config';
 import { AGENT } from '../src/lib/allanime.ts';
 
 async function run() {
   const baseUrl = 'https://otakudesu.blog';
   const cleanTitle = 'Re:Zero kara Hajimeru Isekai Seikatsu Season 4';
   const targetUrl = `${baseUrl}/?s=${encodeURIComponent(cleanTitle)}`;
-  const proxyUrl = `https://[YOUR_PROXY_URL_HERE]/?url=${encodeURIComponent(targetUrl)}`;
+  const proxyUrl = `${process.env.PROXY_URL}${encodeURIComponent(targetUrl)}`;
 
   console.log("Testing direct fetch to Otakudesu...");
   try {

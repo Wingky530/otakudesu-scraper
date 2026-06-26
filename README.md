@@ -67,12 +67,13 @@ This is the most heavily protected part of Otakudesu.
     *   The Otakudesu server then returns a base64 encoded HTML string, which when decoded contains an iframe element with the actual video link (final resolution).
 
 ## Technical Notes
-*   **Cloudflare Worker Proxy**: The source code contains placeholders marked as `[YOUR_PROXY_URL_HERE]`. These must be replaced with your own Cloudflare Worker Proxy URL. The proxy is strictly required for every request to bypass anti-bot blocks, hide the origin IP address, and attach valid `User-Agent` headers without being rejected by the target server.
+*   **Cloudflare Worker Proxy**: This scraper requires a Cloudflare Worker Proxy to bypass anti-bot blocks, hide the origin IP address, and attach valid `User-Agent` headers. You must create a `.env` file in the root directory (copy from `.env.example`) and set the `PROXY_URL` variable.
 *   **Cheerio**: All HTML structure parsing processes are performed using the `cheerio` library.
 
 ## Cloudflare Worker Setup
 
-To bypass anti-bot mechanisms and CORS restrictions, a Cloudflare Worker proxy is strictly required. You can deploy the following Worker script, which accepts a `?url=` parameter, forwards requests to the target, attaches realistic browser headers, and handles CORS gracefully.
+To bypass anti-bot mechanisms and CORS restrictions, deploy the following Worker script. Then, set your `.env` file to point to it:
+`PROXY_URL="https://your-worker.workers.dev/?url="`
 
 ```javascript
 export default {
@@ -175,33 +176,10 @@ To prevent getting your proxy IPs banned and to maintain a healthy scraping envi
 Below is a realistic but fictional example of the final resolved video object returned after completing the entire scraping flow:
 
 ```json
-{
-  "episode": "11",
-  "title": "Re:Zero kara Hajimeru Isekai Seikatsu",
-  "synopsis": "In the deadly battle at the Watergate City of Priestella, Subaru and his allies barely emerged victorious...",
-  "episodeSynopsis": "",
-  "thumbnail": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx189046-yaHWtS5FII46.jpg",
-  "sources": [
-    {
-      "sourceName": "S-mp4",
-      "url": "https://s3.animedrive.com/video/720p/rezero-ep11.mp4",
-      "type": "mp4"
-    },
-    {
-      "sourceName": "Ok",
-      "url": "https://ok.ru/videoembed/9876543210123",
-      "type": "iframe"
-    },
-    {
-      "sourceName": "Luf-mp4",
-      "url": "https://luf.animedrive.com/video/480p/rezero-ep11.mp4",
-      "type": "mp4"
-    },
-    {
-      "sourceName": "Default",
-      "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043...",
-      "type": "iframe"
-    }
-  ]
-}
+[
+  {
+    "sourceName": "Default",
+    "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
+  }
+]
 ```
