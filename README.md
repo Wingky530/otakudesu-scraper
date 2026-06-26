@@ -154,7 +154,7 @@ When the scraper inevitably breaks due to upstream changes, follow this guide to
 1.  **Finding New AJAX Action Hashes**:
     *   Open your browser's DevTools (F12) and navigate to the **Network** tab.
     *   Visit an episode page on the Otakudesu website.
-    *   Click on a different mirror server button (e.g., "720p Mp4upload").
+    *   Click on a different mirror server button (e.g., "Default").
     *   Look for XHR/Fetch requests pointing to `wp-admin/admin-ajax.php`.
     *   Inspect the request payloads (Form Data or URL Parameters) to identify the new `action` string being used to fetch the nonce or resolve the mirror link.
 2.  **Updating the Source Code**:
