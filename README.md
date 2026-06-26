@@ -1,5 +1,8 @@
 # Otakudesu Scraper Documentation
 
+> [!WARNING]
+> These scraping scripts are strictly designed for and tested on the `https://otakudesu.blog` domain. If the website changes its domain or updates its core structure, the scripts may break and will require adjustments.
+
 This repository contains a collection of prototypes and testing scripts for scraping the Otakudesu website. These scripts were originally developed as part of research for the Cerydra project.
 
 ## File Structure
