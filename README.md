@@ -178,15 +178,7 @@ Below is a realistic but fictional example of the final resolved video object re
 [
   {
     "sourceName": "Default",
-    "url": "https://v2.desustream.com/dstream/owatch/new/hd/index.php?id=T3Nrd1U2..."
-  },
-  {
-    "sourceName": "Ok (720p)",
-    "url": "https://ok.ru/videoembed/9876543210123"
-  },
-  {
-    "sourceName": "Mp4 (480p)",
-    "url": "https://www.mp4upload.com/embed-xyz123abc.html"
+    "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
   }
 ]
 ```
