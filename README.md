@@ -69,3 +69,124 @@ This is the most heavily protected part of Otakudesu.
 ## Technical Notes
 *   **Cloudflare Worker Proxy**: The source code contains placeholders marked as `[YOUR_PROXY_URL_HERE]`. These must be replaced with your own Cloudflare Worker Proxy URL. The proxy is strictly required for every request to bypass anti-bot blocks, hide the origin IP address, and attach valid `User-Agent` headers without being rejected by the target server.
 *   **Cheerio**: All HTML structure parsing processes are performed using the `cheerio` library.
+
+## Cloudflare Worker Setup
+
+To bypass anti-bot mechanisms and CORS restrictions, a Cloudflare Worker proxy is strictly required. You can deploy the following Worker script, which accepts a `?url=` parameter, forwards requests to the target, attaches realistic browser headers, and handles CORS gracefully.
+
+```javascript
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const targetUrlStr = url.searchParams.get('url');
+
+    if (!targetUrlStr) {
+      return new Response(JSON.stringify({ error: "Missing 'url' query parameter" }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+    }
+
+    try {
+      const targetUrl = new URL(targetUrlStr);
+      
+      const headers = new Headers(request.headers);
+      // Attach a realistic user-agent to bypass basic bot detection
+      headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+      // Set referer if not present to mimic browser behavior
+      if (!headers.has('Referer')) {
+        headers.set('Referer', targetUrl.origin);
+      }
+
+      // Reconstruct the request to forward
+      const proxyRequest = new Request(targetUrl, {
+        method: request.method,
+        headers: headers,
+        body: ['GET', 'HEAD'].includes(request.method) ? null : request.body,
+        redirect: 'follow',
+      });
+
+      const response = await fetch(proxyRequest);
+      const responseHeaders = new Headers(response.headers);
+      
+      // Inject CORS headers
+      responseHeaders.set("Access-Control-Allow-Origin", "*");
+      responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      responseHeaders.set("Access-Control-Allow-Headers", "*");
+
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ error: "Failed to proxy request", details: error.message }), {
+        status: 502,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+    }
+  },
+};
+```
+
+## Known Limitations & Fragility Points
+
+When working with this scraper, please be aware of the following fragility points:
+
+*   **Hardcoded AJAX Actions**: The AJAX action hashes (e.g., the nonce fetcher and mirror resolver) are currently hardcoded. Otakudesu may update their backend anytime, which would break the scraper and require manual re-research.
+*   **Payload Format Changes**: The base64 payload format found inside the `data-content` attributes on mirror buttons may change structure without notice.
+*   **String Similarity Limitations**: The title matching algorithm (string similarity) may occasionally produce false positives for anime franchises that share very similar titles but lack clear season numbering.
+*   **Subtitles Only**: Only Indonesian subtitles (*sub Indo*) are supported and available through this method; no dubbed content is provided.
+*   **Mirror Reliability**: Not all extracted mirror servers are guaranteed to be active or fully responsive at any given time.
+*   **Domain Dependency**: The scraper is tightly coupled to the `otakudesu.blog` domain and will immediately break if the site migrates to a new domain name or alters its URL routing.
+
+## Maintenance Guide
+
+When the scraper inevitably breaks due to upstream changes, follow this guide to re-research and patch it:
+
+1.  **Finding New AJAX Action Hashes**:
+    *   Open your browser's DevTools (F12) and navigate to the **Network** tab.
+    *   Visit an episode page on the Otakudesu website.
+    *   Click on a different mirror server button (e.g., "720p Mp4upload").
+    *   Look for XHR/Fetch requests pointing to `wp-admin/admin-ajax.php`.
+    *   Inspect the request payloads (Form Data or URL Parameters) to identify the new `action` string being used to fetch the nonce or resolve the mirror link.
+2.  **Updating the Source Code**:
+    *   Once you have identified the new action strings, locate the `callAjax` invocations in the `.ts` files inside the `src` directory.
+    *   Replace the old action hashes with the newly discovered ones.
+3.  **Verification Frequency**:
+    *   It is highly recommended to re-verify the script after any major site redesign, domain migration, or periods where the video players fail to load correctly on the website itself.
+
+## Request Etiquette & Rate Limiting
+
+To prevent getting your proxy IPs banned and to maintain a healthy scraping environment:
+
+*   **Implement Delays**: Enforce a minimum delay of 1 to 2 seconds between sequential requests.
+*   **Avoid Concurrency**: Avoid running multiple concurrent scraping sessions or spamming asynchronous requests against the same target at once.
+*   **Proxy Limits**: While the Cloudflare Worker proxy obfuscates your origin IP, it is not a substitute for respectful rate limiting. Over-taxing the proxy will still lead to Cloudflare IPs being temporarily banned by Otakudesu's firewall.
+
+## Sample Output
+
+Below is a realistic but fictional example of the final resolved video object returned after completing the entire scraping flow:
+
+```json
+[
+  {
+    "sourceName": "Default",
+    "url": "https://v2.desustream.com/dstream/owatch/new/hd/index.php?id=T3Nrd1U2..."
+  },
+  {
+    "sourceName": "Ok (720p)",
+    "url": "https://ok.ru/videoembed/9876543210123"
+  },
+  {
+    "sourceName": "Mp4 (480p)",
+    "url": "https://www.mp4upload.com/embed-xyz123abc.html"
+  }
+]
+```
