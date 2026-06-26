@@ -175,10 +175,33 @@ To prevent getting your proxy IPs banned and to maintain a healthy scraping envi
 Below is a realistic but fictional example of the final resolved video object returned after completing the entire scraping flow:
 
 ```json
-[
-  {
-    "sourceName": "Default",
-    "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
-  }
-]
+{
+  "episode": "11",
+  "title": "Re:Zero kara Hajimeru Isekai Seikatsu",
+  "synopsis": "In the deadly battle at the Watergate City of Priestella, Subaru and his allies barely emerged victorious...",
+  "episodeSynopsis": "",
+  "thumbnail": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx189046-yaHWtS5FII46.jpg",
+  "sources": [
+    {
+      "sourceName": "S-mp4",
+      "url": "https://s3.animedrive.com/video/720p/rezero-ep11.mp4",
+      "type": "mp4"
+    },
+    {
+      "sourceName": "Ok",
+      "url": "https://ok.ru/videoembed/9876543210123",
+      "type": "iframe"
+    },
+    {
+      "sourceName": "Luf-mp4",
+      "url": "https://luf.animedrive.com/video/480p/rezero-ep11.mp4",
+      "type": "mp4"
+    },
+    {
+      "sourceName": "Default",
+      "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043...",
+      "type": "iframe"
+    }
+  ]
+}
 ```
