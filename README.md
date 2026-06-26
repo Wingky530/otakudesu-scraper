@@ -184,6 +184,34 @@ Below is a realistic but fictional example of the final resolved video object re
     {
       "sourceName": "Default",
       "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
+    },
+    {
+      "sourceName": "otakuwatchhd2 (480p)",
+      "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
+    },
+    {
+      "sourceName": "vidhide (480p)",
+      "url": "https://odvidhide.com/embed/ru3axk410mlg"
+    },
+    {
+      "sourceName": "yourupload (480p)",
+      "url": "https://desudrive.com/stream/yuplod.php?id=7a3tXm5q1Y8q"
+    },
+    {
+      "sourceName": "mega (480p)",
+      "url": "https://mega.nz/embed/KRIFTbrS#9t9IbKANkETQuH61UivNkykkVdI9QpZzGBCmYsFmPd8"
+    },
+    {
+      "sourceName": "vidhide (720p)",
+      "url": "https://odvidhide.com/embed/nshshctpz9gq"
+    },
+    {
+      "sourceName": "yourupload (720p)",
+      "url": "https://desudrive.com/stream/yuplod.php?id=WBT3i4Oy2G6K"
+    },
+    {
+      "sourceName": "mega (720p)",
+      "url": "https://mega.nz/embed/uAwSTZaR#4dcXZBG-8aoRaXZnynap986NDd9Pdkd-DdL05iauZBM"
     }
   ]
 }

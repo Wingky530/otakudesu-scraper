@@ -183,13 +183,19 @@ async function scrapeOtakudesu(title: string, episode: string) {
     for (const [key, value] of Object.entries(data)) {
       params.append(key, value);
     }
-    const targetUrl = `${baseUrl}/wp-admin/admin-ajax.php?${params.toString()}`;
+    const targetUrl = `${baseUrl}/wp-admin/admin-ajax.php`;
     const proxyTarget = `${proxyUrl}${encodeURIComponent(targetUrl)}`;
     const response = await fetch(proxyTarget, {
-      method: 'GET',
-      headers: { 'User-Agent': AGENT, 'Referer': targetEp!.url }
+      method: 'POST',
+      headers: { 
+        'User-Agent': AGENT, 
+        'Referer': targetEp!.url,
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Accept': 'application/json, text/javascript, */*; q=0.01'
+      },
+      body: params.toString()
     });
-    if (!response.ok) throw new Error(`Ajax GET failed: HTTP ${response.status}`);
+    if (!response.ok) throw new Error(`Ajax POST failed: HTTP ${response.status}`);
     const result = await response.json();
     return result.data;
   };
