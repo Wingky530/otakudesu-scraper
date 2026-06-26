@@ -226,7 +226,12 @@ async function scrapeOtakudesu(title: string, episode: string) {
   } catch (err: any) {
     console.error('Error resolving mirrors:', err.message);
   }
-  return results;
+  return {
+    anime: targetEp?.title || cleanTitle,
+    episode: episode,
+    sourceUrl: targetEp?.url || '',
+    mirrors: results
+  };
 }
 
 scrapeOtakudesu("Boku no Hero Academia Season 7", "11").then(console.log).catch(console.error);

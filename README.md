@@ -176,10 +176,15 @@ To prevent getting your proxy IPs banned and to maintain a healthy scraping envi
 Below is a realistic but fictional example of the final resolved video object returned after completing the entire scraping flow:
 
 ```json
-[
-  {
-    "sourceName": "Default",
-    "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
-  }
-]
+{
+  "anime": "Boku no Hero Academia Season 7",
+  "episode": "11",
+  "sourceUrl": "https://otakudesu.blog/episode/bnha-s7-episode-11-sub-indo/",
+  "mirrors": [
+    {
+      "sourceName": "Default",
+      "url": "https://v2.desustream.com/dstream/otakuwatch2/new/hd/index.php?id=WUxqZ043SGQ4OW5EMFNjeUJQSzUydUQ4U0xPYnZLQ1J2bkloQldGOWkzST0="
+    }
+  ]
+}
 ```
