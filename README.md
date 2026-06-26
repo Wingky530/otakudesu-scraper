@@ -11,6 +11,31 @@ The files inside the `src` directory are Node.js (TypeScript) scripts used to te
 *   **`test-otakudesu-search.ts`**: A module focused on the search feature and title matching algorithm (string similarity).
 *   **`test-otakudesu-episode-inspect.ts`**: A script to inspect the HTML structure of the episode page and extract the available mirror lists.
 
+## Getting Started (For Forking and Development)
+
+If you wish to fork this repository and run the scripts locally, follow these steps:
+
+### 1. Prerequisites
+*   **Node.js**: Ensure you have Node.js installed (v18 or above is recommended).
+*   **Cloudflare Worker Proxy**: You must deploy a Cloudflare Worker that accepts a `?url=` parameter and proxies the GET/POST requests. This is required to bypass Cloudflare and IP bans on the target site.
+
+### 2. Installation
+Clone the repository and install the dependencies:
+```bash
+git clone https://github.com/Wingky530/otakudesu-scraper.git
+cd otakudesu-scraper
+npm install
+```
+
+### 3. Setup and Execution
+Before running the scripts, you must replace the proxy placeholder.
+1. Open the `.ts` files inside the `src` directory.
+2. Find `[YOUR_PROXY_URL_HERE]` and replace it with your active Cloudflare Worker URL.
+3. Run the main test script using `tsx` (TypeScript Execution):
+```bash
+npx tsx src/test-scrape-otakudesu.ts
+```
+
 ## Otakudesu Scraping Flow
 
 Scraping Otakudesu involves a fairly complex flow due to anti-bot protections, page redirections, and the use of AJAX to hide actual video links. Here is the complete flow:
