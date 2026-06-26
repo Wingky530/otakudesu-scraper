@@ -4,7 +4,7 @@ async function run() {
   const baseUrl = 'https://otakudesu.blog';
   const cleanTitle = 'Re:Zero kara Hajimeru Isekai Seikatsu Season 4';
   const targetUrl = `${baseUrl}/?s=${encodeURIComponent(cleanTitle)}`;
-  const proxyUrl = `https://cerydra-video-proxy.wingky530-id.workers.dev/?url=${encodeURIComponent(targetUrl)}`;
+  const proxyUrl = `https://[YOUR_PROXY_URL_HERE]/?url=${encodeURIComponent(targetUrl)}`;
 
   console.log("Testing direct fetch to Otakudesu...");
   try {

@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 
 async function test() {
-  const proxyUrl = 'https://cerydra-video-proxy.wingky530-id.workers.dev/?url=';
+  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
   const target = `https://otakudesu.blog/episode/bnha-s7-episode-21-sub-indo/`;
   const res = await fetch(`${proxyUrl}${encodeURIComponent(target)}`);
   const html = await res.text();

@@ -35,7 +35,7 @@ async function run() {
     }
     
     const targetUrl = `${baseUrl}/wp-admin/admin-ajax.php?${params.toString()}`;
-    const proxyUrl = `https://cerydra-video-proxy.wingky530-id.workers.dev/?url=${encodeURIComponent(targetUrl)}`;
+    const proxyUrl = `https://[YOUR_PROXY_URL_HERE]/?url=${encodeURIComponent(targetUrl)}`;
     
     console.log(`Calling AJAX via Worker proxy for action: ${action}...`);
     const response = await fetch(proxyUrl, {

@@ -1,0 +1,23 @@
+{
+  "name": "otakudesu-scraper",
+  "version": "1.0.0",
+  "description": "Repositori ini berisi sekumpulan purwarupa (prototype) dan skrip pengujian untuk melakukan scraping pada situs Otakudesu. Skrip-skrip ini sebelumnya dikembangkan sebagai bagian dari riset untuk proyek Cerydra.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wingky530/otakudesu-scraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wingky530/otakudesu-scraper/issues"
+  },
+  "homepage": "https://github.com/Wingky530/otakudesu-scraper#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  }
+}

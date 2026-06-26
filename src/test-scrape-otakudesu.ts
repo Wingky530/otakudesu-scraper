@@ -48,7 +48,7 @@ async function scrapeOtakudesu(title: string, episode: string) {
   const baseUrl = 'https://otakudesu.blog';
   const cleanTitle = title.replace(/^#\d+\s+/, '').trim();
 
-  const proxyUrl = 'https://cerydra-video-proxy.wingky530-id.workers.dev/?url=';
+  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
   const targetSearch = `${baseUrl}/?s=${encodeURIComponent(cleanTitle)}`;
   console.log("Searching:", targetSearch);
   const searchRes = await fetch(`${proxyUrl}${encodeURIComponent(targetSearch)}`, {

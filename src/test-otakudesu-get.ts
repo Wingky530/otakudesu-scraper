@@ -4,7 +4,7 @@ const AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHT
 
 async function test() {
   const baseUrl = 'https://otakudesu.blog';
-  const proxyUrl = 'https://cerydra-video-proxy.wingky530-id.workers.dev/?url=';
+  const proxyUrl = 'https://[YOUR_PROXY_URL_HERE]/?url=';
 
   const callAjaxGet = async (action: string, data: Record<string, string> = {}) => {
     const params = new URLSearchParams();
