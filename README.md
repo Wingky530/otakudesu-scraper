@@ -56,7 +56,7 @@ Scraping Otakudesu involves a fairly complex flow due to anti-bot protections, p
 ### 4. Video Link Extraction and Resolution
 This is the most heavily protected part of Otakudesu.
 
-*   **Main Link (Iframe)**: The site often embeds a default iframe directly (such as Ok.ru or Mp4upload). This link can be extracted directly from the `.player-embed iframe` element.
+*   **Main Link (Iframe)**: The site often embeds a default iframe directly (such as their own Desustream player or other third-party servers). This link can be extracted directly from the `#pembed iframe` or `.player-embed iframe` element.
 *   **Mirror Links**: There is a list of mirror servers with different qualities (360p, 480p, 720p). These links are not written plainly in the HTML.
     *   Each mirror button has a `data-content` attribute containing a base64 string formatted as JSON.
     *   To decode this string, the web client sends a GET request to `wp-admin/admin-ajax.php` with a specific action parameter (example: `aa1208d27f29ca340c92c66d1926f13f`) to get a nonce (a one-time security token).
